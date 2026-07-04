@@ -44,7 +44,7 @@
                  v-if="!item.expand"
                  :key="item.emailId"
                  @contextmenu="handleContextmenu($event, item)"
-                 :style="item.rightChecked ? 'background: #FDF6EC' : ''"
+                 :style="item.rightChecked ? 'background: var(--accent)' : ''"
             >
               <el-checkbox :class=" props.type === 'all-email' ? 'all-email-checkbox' : 'checkbox'"
                            v-model="item.checked" @click.stop></el-checkbox>
@@ -919,7 +919,7 @@ function loadData() {
   grid-template-rows: auto 1fr;
   padding: 0;
   font-size: 14px;
-  color: var(--el-text-color-primary);
+  color: var(--foreground);
   overflow: hidden;
   height: 100%;
 }
@@ -985,18 +985,17 @@ function loadData() {
   display: flex;
   padding: 8px 0;
   justify-content: space-between;
-  box-shadow: var(--header-actions-border);
+  border-bottom: 1px solid var(--border);
   cursor: pointer;
   align-items: center;
   position: relative;
-  transition: background 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: background 0.15s ease;
   height: 48px;
   @media (max-width: 1366px) {
     height: 83px;
   }
 
   @media (pointer: coarse) {
-    /* 触屏 */
     user-select: none;
   }
   &.all-email {
@@ -1081,7 +1080,7 @@ function loadData() {
     }
 
     .email-sender {
-      color: var(--el-text-color-primary);
+      color: var(--foreground);
       display: grid;
       grid-template-columns: auto 1fr auto;
 
@@ -1185,7 +1184,7 @@ function loadData() {
         height: 20px;
         line-height: 20px;
         font-size: 14px;
-        color: var(--el-text-color-primary);
+        color: var(--foreground);
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -1234,12 +1233,11 @@ function loadData() {
 
   &:hover {
     background-color: var(--email-hover-background);
-    z-index: 0;
   }
 
-  /*&[data-checked="true"] {
-    background-color: #c2dbff;
-  }*/
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 
@@ -1281,7 +1279,7 @@ function loadData() {
   align-items: center;
   gap: 15px;
   padding: 3px 15px;
-  box-shadow: var(--header-actions-border);
+  border-bottom: 1px solid var(--border);
 
   .header-left {
     display: flex;
@@ -1291,7 +1289,7 @@ function loadData() {
     column-gap: 20px;
     row-gap: 8px;
     padding-left: 2px;
-    color: var(--el-text-color-primary);;
+    color: var(--foreground);
   }
 
   .header-right {
@@ -1299,17 +1297,25 @@ function loadData() {
     grid-template-columns: auto auto;
     align-items: start;
     height: 100%;
-    color: var(--el-text-color-primary);;
+    color: var(--foreground);
 
     .email-count {
       white-space: nowrap;
       margin-top: 6px;
+      color: var(--muted-foreground);
+      font-size: 13px;
     }
   }
 
   .icon {
     font-size: 18px;
     cursor: pointer;
+    color: var(--muted-foreground);
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--foreground);
+    }
   }
 
   .more-icon {
@@ -1350,7 +1356,7 @@ function loadData() {
 .unread {
   height: 6px;
   width: 6px;
-  background: var(--el-color-primary);
+  background: var(--foreground);
   margin-bottom: 2px;
   margin-right: 5px;
   border-radius: 50%;

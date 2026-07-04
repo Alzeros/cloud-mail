@@ -6,25 +6,25 @@
     </div>
     <div v-perm="'email:send'" class="writer-box" @click="openSend">
       <div class="writer">
-        <Icon icon="material-symbols:edit-outline-sharp" width="22" height="22"/>
+        <Icon icon="material-symbols:edit-outline-sharp" width="18" height="18"/>
       </div>
     </div>
     <div class="toolbar">
-      <div v-if="uiStore.dark" class="sun-icon icon-item" @click="openDark($event)">
-        <Icon icon="mingcute:sun-fill"/>
+      <div v-if="uiStore.dark" class="icon-item" @click="openDark($event)">
+        <Icon icon="mingcute:sun-fill" width="18" height="18"/>
       </div>
-      <div v-else class="dark-icon icon-item" @click="openDark($event)">
-        <Icon icon="solar:moon-linear"/>
+      <div v-else class="icon-item" @click="openDark($event)">
+        <Icon icon="solar:moon-linear" width="18" height="18"/>
       </div>
-      <div class="notice icon-item" @click="openNotice">
-        <Icon icon="streamline-plump:announcement-megaphone"/>
+      <div class="icon-item" @click="openNotice">
+        <Icon icon="streamline-plump:announcement-megaphone" width="18" height="18"/>
       </div>
       <el-dropdown ref="userinfoRef" @visible-change="e => userInfoShow = e" :teleported="false" popper-class="detail-dropdown">
         <div class="avatar" @click="userInfoHide" >
           <div class="avatar-text">
-            <div>{{ formatName(userStore.user.email) }}</div>
+            {{ formatName(userStore.user.email) }}
           </div>
-          <Icon class="setting-icon" icon="mingcute:down-small-fill" width="24" height="24"/>
+          <Icon class="setting-icon" icon="mingcute:down-small-fill" width="18" height="18"/>
         </div>
         <template #dropdown>
           <div class="user-details">
@@ -38,7 +38,7 @@
               {{ userStore.user.email }}
             </div>
             <div class="detail-user-type">
-              <el-tag>{{ userStore.user.role.name }}</el-tag>
+              <el-tag size="small">{{ userStore.user.role.name }}</el-tag>
             </div>
             <div class="action-info">
               <div>
@@ -48,17 +48,17 @@
               <div>
                 <div>
                   <span v-if="sendCount" style="margin-right: 5px">{{ sendCount }}</span>
-                  <el-tag v-if="!hasPerm('email:send')">{{ sendType }}</el-tag>
-                  <el-tag v-else>{{ sendType }}</el-tag>
+                  <el-tag v-if="!hasPerm('email:send')" size="small">{{ sendType }}</el-tag>
+                  <el-tag v-else size="small">{{ sendType }}</el-tag>
                 </div>
                 <div>
-                  <el-tag v-if="settingStore.settings.manyEmail || settingStore.settings.addEmail">
+                  <el-tag v-if="settingStore.settings.manyEmail || settingStore.settings.addEmail" size="small">
                     {{ $t('disabled') }}
                   </el-tag>
                   <span v-else-if="accountCount && hasPerm('account:add')"
                         style="margin-right: 5px">{{ $t('totalUserAccount', {msg: accountCount}) }}</span>
-                  <el-tag v-else-if="!accountCount && hasPerm('account:add')">{{ $t('unlimited') }}</el-tag>
-                  <el-tag v-else-if="!hasPerm('account:add')">{{ $t('unauthorized') }}</el-tag>
+                  <el-tag v-else-if="!accountCount && hasPerm('account:add')" size="small">{{ $t('unlimited') }}</el-tag>
+                  <el-tag v-else-if="!hasPerm('account:add')" size="small">{{ $t('unauthorized') }}</el-tag>
                 </div>
               </div>
             </div>
@@ -257,14 +257,14 @@ function formatName(email) {
 </script>
 <style>
 .detail-dropdown {
-  color: var(--el-text-color-primary) !important;
+  color: var(--foreground) !important;
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: none !important;
 }
 </style>
 <style lang="scss" scoped>
-
-:deep(.el-popper.is-pure) {
-  border-radius: 6px;
-}
 
 .user-details {
   width: 250px;
@@ -274,7 +274,7 @@ function formatName(email) {
   justify-items: center;
 
   .user-name {
-    font-weight: bold;
+    font-weight: 600;
     margin-top: 10px;
     padding-left: 20px;
     padding-right: 20px;
@@ -321,7 +321,7 @@ function formatName(email) {
     white-space: nowrap;
     text-overflow: ellipsis;
     text-align: center;
-    color: var(--regular-text-color);
+    color: var(--muted-foreground);
     cursor: pointer;
   }
 
@@ -333,8 +333,8 @@ function formatName(email) {
     padding-bottom: 10px;
 
     .el-button {
-      border-radius: 6px;
-      height: 28px;
+      border-radius: var(--radius);
+      height: 32px;
       width: 100%;
     }
   }
@@ -343,9 +343,9 @@ function formatName(email) {
     margin-top: 20px;
     height: 40px;
     width: 40px;
-    background: var(--el-bg-color);
-    color: var(--el-text-color-primary);
-    border: 1px solid var(--dark-border);
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border: 1px solid var(--border);
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -379,17 +379,15 @@ function formatName(email) {
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    color: #ffffff;
-    background: linear-gradient(135deg, #1890ff, #3a80dd);
-    transition: all 0.3s ease;
+    color: var(--primary-foreground);
+    background: var(--primary);
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .writer-text {
-      margin-left: 15px;
-      font-size: 14px;
-      font-weight: bold;;
+    &:hover {
+      opacity: 0.8;
     }
   }
 }
@@ -402,9 +400,9 @@ function formatName(email) {
 }
 
 .breadcrumb-item {
-  font-weight: bold;
+  font-weight: 600;
   font-size: 14px;
-  color: var(--el-text-color-primary);
+  color: var(--foreground);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -413,61 +411,51 @@ function formatName(email) {
 .toolbar {
   display: flex;
   justify-content: end;
-  gap: 15px;
+  gap: 4px;
   @media (max-width: 767px) {
-    gap: 10px;
+    gap: 4px;
   }
 
   .icon-item {
     align-self: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: calc(var(--radius) * 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    color: var(--muted-foreground);
+    transition: all 0.15s ease;
   }
 
   .icon-item:hover {
-    background: var(--base-fill);
-  }
-
-  .notice {
-    font-size: 22px;
-    margin-right: 4px;
-  }
-
-  .dark-icon {
-    font-size: 20px;
-  }
-
-  .sun-icon {
-    font-size: 24px;
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   .avatar {
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin-left: 4px;
 
     .avatar-text {
-      background: var(--el-bg-color);
-      color: var(--el-text-color-primary);
+      background: var(--muted);
+      color: var(--muted-foreground);
       height: 30px;
       width: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 8px;
-      border: 1px solid var(--dark-border);
+      border: 1px solid var(--border);
+      font-weight: 500;
+      font-size: 13px;
     }
 
     .setting-icon {
-      position: relative;
-      top: 0;
-      margin-right: 10px;
-      bottom: 10px;
+      color: var(--muted-foreground);
     }
   }
 

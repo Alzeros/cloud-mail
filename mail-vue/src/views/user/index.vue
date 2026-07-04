@@ -1088,7 +1088,7 @@ function adjustWidth() {
   gap: 15px;
   flex-wrap: wrap;
   align-items: center;
-  box-shadow: var(--header-actions-border);
+  border-bottom: 1px solid var(--border);
   font-size: 18px;
 
   .search-input {
@@ -1123,7 +1123,7 @@ function adjustWidth() {
 }
 
 .choose-star {
-  color: var(--el-color-primary)
+  color: var(--foreground)
 }
 
 .scrollbar {
@@ -1246,13 +1246,13 @@ function adjustWidth() {
 
 :deep(.el-pagination .el-select) {
   width: 100px;
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 :deep(.el-input-group__append) {
   padding: 0 !important;
   padding-left: 8px !important;
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 :deep(.cell) {
@@ -1285,7 +1285,7 @@ function adjustWidth() {
 }
 
 :deep(.el-table__inner-wrapper:before) {
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 :deep(.el-message-box__container) {

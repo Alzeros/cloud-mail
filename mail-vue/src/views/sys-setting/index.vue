@@ -1587,9 +1587,9 @@ function editSetting(settingForm, refreshStatus = true) {
 }
 
 .settings-card {
-  background-color: var(--el-bg-color);
-  border-radius: 8px;
-  border: 1px solid var(--el-border-color);
+  background-color: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
   transition: all 300ms;
   overflow: hidden;
 }
@@ -1597,9 +1597,9 @@ function editSetting(settingForm, refreshStatus = true) {
 
 .card-title {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 600;
   padding: 10px 20px;
-  border-bottom: 1px solid var(--el-border-color);
+  border-bottom: 1px solid var(--border);
 }
 
 .card-content {
@@ -1734,7 +1734,7 @@ function editSetting(settingForm, refreshStatus = true) {
 }
 
 :deep(.el-table__inner-wrapper:before) {
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 :deep(.cut-dialog.el-dialog) {

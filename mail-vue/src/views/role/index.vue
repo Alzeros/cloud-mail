@@ -443,7 +443,7 @@ window.onresize = () => {
   display: flex;
   align-items: center;
   gap: 18px;
-  box-shadow: var(--header-actions-border);
+  border-bottom: 1px solid var(--border);
   font-size: 18px;
 
   .search {

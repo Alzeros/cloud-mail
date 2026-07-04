@@ -18,10 +18,10 @@
             </div>
             <div class="settings" @click.stop>
               <Icon icon="fluent-color:clipboard-24" width="22" height="22" @click.stop="copyAccount(item.email)"/>
-              <Icon icon="fluent:settings-24-filled" width="21" height="21" color="#909399"
+              <Icon icon="fluent:settings-24-filled" width="21" height="21" color="var(--muted-foreground)"
                     v-if="showNullSetting(item)"/>
               <el-dropdown v-else>
-                <Icon icon="fluent:settings-24-filled" width="21" height="21" color="#909399"/>
+                <Icon icon="fluent:settings-24-filled" width="21" height="21" color="var(--muted-foreground)"/>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item v-if="hasPerm('email:send')" @click="openSetName(item)">{{ $t('rename') }}</el-dropdown-item>
@@ -518,8 +518,8 @@ path[fill="#ffdda1"] {
 <style scoped lang="scss">
 .account-box {
 
-  border-right: 1px solid var(--el-border-color) !important;
-  background-color: var(--el-bg-color);
+  border-right: 1px solid var(--border) !important;
+  background-color: var(--card);
   height: 100%;
   overflow: hidden;
 
@@ -527,7 +527,7 @@ path[fill="#ffdda1"] {
     display: flex;
     align-items: center;
     height: 38px;
-    box-shadow: var(--header-actions-border);
+    border-bottom: 1px solid var(--border);
     padding-left: 10px;
     padding-right: 10px;
 
@@ -578,8 +578,8 @@ path[fill="#ffdda1"] {
   }
 
   .item {
-    background-color: var(--el-bg-color);
-    border-radius: 8px;
+    background-color: var(--card);
+    border-radius: var(--radius);
     padding: 12px 10px;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -598,7 +598,7 @@ path[fill="#ffdda1"] {
       display: flex;
       justify-content: space-between;
       font-size: 12px;
-      color: #888;
+      color: var(--muted-foreground);
 
       .settings {
         display: flex;
@@ -635,7 +635,7 @@ path[fill="#ffdda1"] {
 :deep(.el-input-group__append) {
   padding: 0 !important;
   padding-left: 8px !important;
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 :deep(.el-dialog) {
@@ -657,7 +657,7 @@ path[fill="#ffdda1"] {
 
 :deep(.el-pagination .el-select) {
   width: 100px;
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 .add-email-turnstile {

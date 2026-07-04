@@ -408,9 +408,9 @@ function openAdd() {
     gap: 15px;
 
     .code-item {
-      background: var(--el-bg-color);
+      background: var(--card);
       border-radius: 8px;
-      border: 1px solid var(--el-border-color);
+      border: 1px solid var(--border);
       transition: all 200ms;
       padding: 15px;
 
@@ -563,7 +563,7 @@ function openAdd() {
 }
 
 :deep(.el-table__inner-wrapper:before) {
-  background: var(--el-bg-color);
+  background: var(--card);
 }
 
 </style>

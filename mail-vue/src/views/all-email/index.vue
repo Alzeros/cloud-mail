@@ -412,7 +412,7 @@ async function latest() {
 
 .search-type {
   display: flex;
-  color: var(--el-text-color-regular);
+  color: var(--muted-foreground);
 }
 
 :deep(.header-actions) {

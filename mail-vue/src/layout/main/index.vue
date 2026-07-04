@@ -110,8 +110,8 @@ const handleResize = () => {
     border: 0;
     height: 100%;
     width: 100%;
-    background: #000000;
-    opacity: 0.6;
+    background: var(--foreground);
+    opacity: 0.3;
     z-index: 10;
     transition: all 300ms;
   }
@@ -147,7 +147,7 @@ const handleResize = () => {
 .main-box-show {
   display: grid;
   grid-template-columns: 260px  1fr;
-  height: calc(100% - 60px);
+  height: calc(100% - 52px);
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
@@ -156,24 +156,24 @@ const handleResize = () => {
 .main-box-hide {
   display: grid;
   grid-template-columns: 1fr;
-  height: calc(100% - 60px);
+  height: calc(100% - 52px);
 }
 
 
 .main-view {
-  background: var(--el-bg-color);
+  background: var(--background);
 }
 
 
 .navigation {
   height: 30px;
-  border-bottom: solid 1px var(--el-menu-border-color);
+  border-bottom: solid 1px var(--border);
   display: inline-flex;
   justify-items: center;
   align-items: center;
   width: 100%;
   .tag {
-    background: var(--el-bg-color);
+    background: var(--card);
     margin-left: 5px;
   }
 }

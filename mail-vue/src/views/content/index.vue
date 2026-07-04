@@ -225,8 +225,9 @@ const handleDelete = () => {
   display: flex;
   align-items: center;
   gap: 20px;
-  box-shadow: var(--header-actions-border);
+  border-bottom: 1px solid var(--border);
   font-size: 18px;
+  color: var(--muted-foreground);
   .star {
     display: flex;
     align-items: center;
@@ -235,6 +236,11 @@ const handleDelete = () => {
   }
   .icon {
     cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--foreground);
+    }
   }
 }
 
@@ -256,11 +262,8 @@ const handleDelete = () => {
 
   .email-title {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 10px;
-  }
-
-  .htm-scrollbar {
   }
 
   .content {
@@ -270,9 +273,9 @@ const handleDelete = () => {
     .att {
       margin-top: 30px;
       margin-bottom: 30px;
-      border: 1px solid var(--light-border-color);
+      border: 1px solid var(--border);
       padding: 14px;
-      border-radius: 6px;
+      border-radius: var(--radius);
       width: fit-content;
       .att-box {
         min-width: min(410px,calc(100vw - 60px));
@@ -287,7 +290,7 @@ const handleDelete = () => {
         display: flex;
         justify-content: space-between;
         span:first-child {
-          font-weight: bold;
+          font-weight: 600;
         }
       }
 
@@ -296,9 +299,9 @@ const handleDelete = () => {
         div {
           align-self: center;
         }
-        background: var(--light-ill);
+        background: var(--muted);
         padding: 5px 7px;
-        border-radius: 4px;
+        border-radius: calc(var(--radius) * 0.6);
         align-self: start;
         display: grid;
         grid-template-columns: auto 1fr auto auto;
@@ -343,15 +346,16 @@ const handleDelete = () => {
 
     .email-info {
 
-      border-bottom: 1px solid var(--light-border-color);
+      border-bottom: 1px solid var(--border);
       margin-bottom: 20px;
       padding-bottom: 8px;
       @media (max-width: 1024px) {
         margin-bottom: 15px;
       }
       .date {
-        color: var(--regular-text-color);
+        color: var(--muted-foreground);
         margin-bottom: 6px;
+        font-size: 13px;
       }
 
       .email-msg {
@@ -365,13 +369,14 @@ const handleDelete = () => {
         margin-bottom: 6px;
 
         .send-name {
-          color: var(--regular-text-color);
+          color: var(--foreground);
           display: flex;
           flex-wrap: wrap;
         }
 
         .send-name-title {
           padding-right: 5px;
+          font-weight: 500;
         }
       }
 
@@ -383,20 +388,22 @@ const handleDelete = () => {
           word-break: break-word;
         }
         span:nth-child(2) {
-          color: var(--regular-text-color);
+          color: var(--muted-foreground);
         }
       }
 
       .send-source {
         white-space: nowrap;
-        font-weight: bold;
+        font-weight: 500;
         padding-right: 10px;
+        color: var(--muted-foreground);
       }
 
       .source {
         white-space: nowrap;
-        font-weight: bold;
+        font-weight: 500;
         padding-right: 10px;
+        color: var(--muted-foreground);
       }
     }
   }
@@ -409,8 +416,8 @@ const handleDelete = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--message-block-color); /* 半透明黑色蒙层 */
-  pointer-events: none; /* 不影响点击 */
+  background: var(--message-block-color);
+  pointer-events: none;
 }
 
 .email-text {

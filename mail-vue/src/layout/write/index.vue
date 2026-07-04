@@ -33,7 +33,7 @@
                   :key="item"
                   :label="item"
                   :value="item"
-                  style="color: #999896;"
+                  style="color: var(--muted-foreground);"
               />
             </el-select>
           </template>
@@ -80,7 +80,7 @@
         <el-table-column width="55" label="" >
           <template #default>
             <div style="display: flex;">
-              <Icon icon="mage:user" style="color: var(--el-text-color-primary)" width="22" height="22" color="#606266" />
+              <Icon icon="mage:user" style="color: var(--muted-foreground)" width="22" height="22" color="var(--muted-foreground)" />
             </div>
           </template>
         </el-table-column>
@@ -628,13 +628,12 @@ function close() {
   justify-content: center;
 
   .write-box {
-    background: var(--el-bg-color);
+    background: var(--card);
     width: min(1367px, calc(100% - 80px));
-    box-shadow: var(--el-box-shadow-light);
-    border: 1px solid var(--el-border-color-light);
+    border: 1px solid var(--border);
     transition: var(--el-transition-duration);
-    padding: 15px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: var(--radius);
     display: grid;
     grid-template-rows: auto 1fr;
     overflow: hidden;
@@ -674,7 +673,7 @@ function close() {
       }
 
       .send-email {
-        color: #999896;
+        color: var(--muted-foreground);
         margin-left: 5px;
         white-space: nowrap;
         text-overflow: ellipsis;

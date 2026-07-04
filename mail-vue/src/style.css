@@ -4,7 +4,7 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     scrollbar-width: thin;
-    scrollbar-color: var(--dark-border) transparent;
+    scrollbar-color: var(--border) transparent;
 }
 
 html, body {
@@ -19,22 +19,22 @@ html, body {
 
 :deep(.el-input__inner:focus) {
     background-color: transparent !important;
-    border-color: #dcdfe6 !important;
+    border-color: var(--border) !important;
 }
 
 .el-table thead th {
-    font-weight: bold !important;
+    font-weight: 500 !important;
 }
 
 body {
     font-family: -apple-system, Inter, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     line-height: 1.5;
-    color: var(--el-text-color-primary);
+    color: var(--foreground);
     font-size: 14px;
 }
 
 html, body {
-    background: var(--el-bg-color);
+    background: var(--background);
 }
 
 ul, ol {
@@ -73,11 +73,11 @@ button, input, select, textarea {
 }
 
 .el-input-group__append, .el-input-group__prepend {
-    color: var(--el-text-color-primary) !important;
+    color: var(--foreground) !important;
 }
 
 .tox .tox-dialog__iframe.tox-dialog__iframe--opaque {
-    background-color: var(--el-bg-color) !important;
+    background-color: var(--background) !important;
 }
 
 .tox .tox-dialog--width-lg {
@@ -105,73 +105,267 @@ button, input, select, textarea {
     max-height: 220px !important;
 }
 
-:root {
-    --el-color-primary: #1890ff;
-    --el-color-primary-dark-2: #1064c0;
-    --el-color-primary-light-3: #4dabff;
-    --el-color-primary-light-5: #69c0ff;
-    --el-color-primary-light-7: #91d5ff;
-    --el-color-primary-light-9: #e6f7ff;
+/* ============================================
+   shadcn/ui-inspired Design Token System
+   ============================================ */
 
-    --extra-light-fill: #FAFCFF;
-    --light-ill: #F5F7FA;
-    --light-border: #E4E7ED;
-    --header-actions-border: inset 0 -1px 0 0 var(--el-border-color-lighter);
-    --aside-backgound: #001529;
-    --loadding-background: rgba(255, 255, 255, 0.8);
-    --dark-border: #CDD0D6;
-    --base-fill: #F0F2F5;
-    --regular-text-color: #585d69;
-    --light-border-color: #e7e9ec;
-    --aside-right-border: 3px 0 5px rgba(0, 21, 41, .35);
-    --choose-account-background: var(--el-color-primary-light-8);
-    --el-text-color-regular: var(--el-text-color-primary);
-    --email-scroll-content-color: rgba(25, 41, 59, 0.4);
-    --email-hover-background: #F2F6FC;
+:root {
+    /* ---- shadcn Semantic Tokens ---- */
+    --background: oklch(0.98 0.003 260);        /* 极浅灰白 */
+    --foreground: oklch(0.145 0.005 260);         /* 近黑 */
+    --card: oklch(1 0 0);                         /* 纯白卡片 */
+    --card-foreground: oklch(0.145 0.005 260);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0.005 260);
+    --primary: oklch(0.205 0.006 260);            /* 深灰（代替蓝色） */
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.95 0.004 260);           /* 浅灰次色 */
+    --secondary-foreground: oklch(0.205 0.005 260);
+    --muted: oklch(0.96 0.004 260);               /* 静音背景 */
+    --muted-foreground: oklch(0.52 0.008 260);    /* 浅灰文字 */
+    --accent: oklch(0.94 0.006 260);              /* 强调 hover */
+    --accent-foreground: oklch(0.205 0.005 260);
+    --destructive: oklch(0.58 0.19 27);           /* 红色警告 */
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.90 0.004 260);              /* 极淡分割线 */
+    --input: oklch(0.90 0.004 260);
+    --ring: oklch(0.60 0.01 260);                 /* focus 环 */
+    --radius: 0.5rem;                             /* 基础圆角 8px */
+
+    /* ---- 与 shadcn 风格一致的项目变量 ---- */
+    --aside-backgound: var(--card);
+    --aside-right-border: 1px solid var(--border);
+    --extra-light-fill: oklch(0.975 0.003 260);
+    --light-ill: oklch(0.95 0.004 260);
+    --light-border: var(--border);
+    --dark-border: oklch(0.87 0.004 260);
+    --base-fill: var(--muted);
+    --regular-text-color: var(--foreground);
+    --light-border-color: var(--border);
+    --choose-account-background: var(--accent);
+    --email-scroll-content-color: var(--muted-foreground);
+    --email-hover-background: var(--accent);
     --login-border: none;
-    --form-desc-color: #71717a;
-    --login-switch-color: #006be6;
-    --scrollbar-track-color: #A8ABB2;
-    --base-border-color: #DCDFE6;
-    --secondary-text-color: #909399;
+    --form-desc-color: var(--muted-foreground);
+    --login-switch-color: var(--foreground);
+    --scrollbar-track-color: var(--border);
+    --base-border-color: var(--border);
+    --secondary-text-color: var(--muted-foreground);
     --message-block-color: rgba(0, 0, 0, 0);
-    --loading-hide-transition: all 200ms;
+    --loadding-background: rgba(255, 255, 255, 0.7);
+    --header-actions-border: inset 0 -1px 0 0 var(--border);
+
+    /* ---- Element Plus Override（浅色） ---- */
+    --el-color-primary: var(--foreground);
+    --el-color-primary-dark-2: oklch(0.25 0.006 260);
+    --el-color-primary-light-3: oklch(0.55 0.008 260);
+    --el-color-primary-light-5: oklch(0.72 0.006 260);
+    --el-color-primary-light-7: oklch(0.85 0.004 260);
+    --el-color-primary-light-8: oklch(0.92 0.003 260);
+    --el-color-primary-light-9: oklch(0.96 0.003 260);
+    --el-color-success: oklch(0.55 0.13 160);
+    --el-color-warning: oklch(0.72 0.12 70);
+    --el-color-danger: var(--destructive);
+    --el-color-info: var(--muted-foreground);
+
+    --el-bg-color: var(--background);
+    --el-bg-color-overlay: var(--popover);
+    --el-text-color-primary: var(--foreground);
+    --el-text-color-regular: var(--foreground);
+    --el-text-color-secondary: var(--muted-foreground);
+    --el-border-color: var(--border);
+    --el-border-color-light: var(--border);
+    --el-border-color-lighter: oklch(0.93 0.003 260);
+    --el-border-color-extra-light: oklch(0.96 0.003 260);
+    --el-fill-color: var(--secondary);
+    --el-fill-color-light: var(--muted);
+    --el-fill-color-lighter: var(--extra-light-fill);
+    --el-fill-color-blank: var(--card);
+    --el-mask-color: rgba(0, 0, 0, 0.3);
+    --el-border-radius-base: var(--radius);
+    --el-border-radius-small: calc(var(--radius) * 0.75);
+    --el-border-radius-round: 999px;
+    --el-box-shadow: none;
+    --el-box-shadow-light: none;
+    --el-box-shadow-lighter: none;
+    --el-menu-border-color: transparent;
+    --el-font-size-base: 14px;
+    --el-font-size-small: 13px;
+    --el-font-size-large: 16px;
+    --el-transition-duration: 0.2s;
+
+    /* ---- 视图过渡 ---- */
     --vt-x: 50%;
     --vt-y: 50%;
     --vt-duration: 520ms;
     --vt-easing: ease-out;
 }
 
+/* ============================================
+   Dark Mode
+   ============================================ */
+
 .dark {
-    --extra-light-fill: #191919;
-    --light-ill: #262727;
-    --light-border: #414243;
-    --aside-backgound: #141414;
-    --header-actions-border: inset 0 -1px 0 0 var(--el-border-color-lighter);
-    --loadding-background: rgba(0, 0, 0, 0.3);
-    --dark-border: #636466;
-    --base-fill: #303030;
-    --regular-text-color: #bfbdbc;
-    --light-border-color: #414243;
-    --aside-right-border: 3px 0 5px #0A0A0A;
-    --choose-account-background: #39393A;
-    --email-scroll-content-color: rgba(255, 255, 255, 0.3);
-    --email-hover-background: #1D1E1F;
+    /* ---- shadcn Semantic Tokens (dark) ---- */
+    --background: oklch(0.15 0.005 260);         /* 深灰底 */
+    --foreground: oklch(0.95 0.003 260);          /* 白字 */
+    --card: oklch(0.18 0.005 260);                /* 深色卡片 */
+    --card-foreground: oklch(0.95 0.003 260);
+    --popover: oklch(0.18 0.005 260);
+    --popover-foreground: oklch(0.95 0.003 260);
+    --primary: oklch(0.95 0.003 260);
+    --primary-foreground: oklch(0.15 0.005 260);
+    --secondary: oklch(0.25 0.005 260);
+    --secondary-foreground: oklch(0.95 0.003 260);
+    --muted: oklch(0.23 0.005 260);
+    --muted-foreground: oklch(0.65 0.006 260);
+    --accent: oklch(0.28 0.005 260);
+    --accent-foreground: oklch(0.95 0.003 260);
+    --destructive: oklch(0.45 0.15 27);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.28 0.005 260);              /* 深色分割 */
+    --input: oklch(0.28 0.005 260);
+    --ring: oklch(0.55 0.008 260);
+
+    /* ---- 项目变量 (dark) ---- */
+    --aside-backgound: var(--card);
+    --extra-light-fill: oklch(0.17 0.005 260);
+    --light-ill: oklch(0.23 0.005 260);
+    --light-border: var(--border);
+    --dark-border: oklch(0.35 0.005 260);
+    --base-fill: var(--muted);
+    --regular-text-color: var(--foreground);
+    --light-border-color: var(--border);
+    --choose-account-background: var(--accent);
+    --email-scroll-content-color: var(--muted-foreground);
+    --email-hover-background: var(--accent);
     --login-border: none;
-    --form-desc-color: #8D9095;
-    --login-switch-color: rgb(102, 177, 255);
-    --scrollbar-track-color: #8D9095;
-    --base-border-color: #4C4D4F;
-    --secondary-text-color: #A3A6AD;
+    --form-desc-color: var(--muted-foreground);
+    --login-switch-color: var(--muted-foreground);
+    --scrollbar-track-color: oklch(0.30 0.005 260);
+    --base-border-color: var(--border);
+    --secondary-text-color: var(--muted-foreground);
     --message-block-color: rgba(30, 30, 30, 0.2);
-    --el-border-color: #414243 !important;
+    --loadding-background: rgba(0, 0, 0, 0.4);
+    --header-actions-border: inset 0 -1px 0 0 var(--border);
+
+    /* ---- Element Plus Override（深色） ---- */
+    --el-color-primary: var(--foreground);
+    --el-color-primary-dark-2: oklch(0.75 0.003 260);
+    --el-color-primary-light-3: oklch(0.55 0.005 260);
+    --el-color-primary-light-5: oklch(0.40 0.005 260);
+    --el-color-primary-light-7: oklch(0.30 0.004 260);
+    --el-color-primary-light-8: oklch(0.26 0.004 260);
+    --el-color-primary-light-9: oklch(0.22 0.004 260);
+
+    --el-bg-color: var(--background);
+    --el-bg-color-overlay: var(--popover);
+    --el-text-color-primary: var(--foreground);
+    --el-text-color-regular: var(--foreground);
+    --el-text-color-secondary: var(--muted-foreground);
+    --el-border-color: var(--border);
+    --el-border-color-light: var(--border);
+    --el-border-color-lighter: oklch(0.30 0.004 260);
+    --el-border-color-extra-light: oklch(0.25 0.004 260);
+    --el-fill-color: var(--secondary);
+    --el-fill-color-light: var(--muted);
+    --el-fill-color-lighter: oklch(0.20 0.004 260);
+    --el-fill-color-blank: var(--card);
+    --el-box-shadow: none;
+    --el-box-shadow-light: none;
+    --el-box-shadow-lighter: none;
+    --el-menu-border-color: transparent;
+
+    /* 覆盖 Element Plus 暗色模式的内置变量 */
+    --el-border-color: var(--border);
 }
+
+/* ============================================
+   Element Plus 组件细节覆盖
+   ============================================ */
 
 .el-input {
-    --el-input-text-color: var(--el-text-color-primary) !important;
+    --el-input-text-color: var(--foreground) !important;
+    --el-input-border-color: var(--input) !important;
+    --el-input-hover-border-color: var(--ring) !important;
+    --el-input-focus-border-color: var(--ring) !important;
+    --el-input-bg-color: var(--background) !important;
+    --el-input-border-radius: var(--radius) !important;
 }
 
-/* 视图过渡，基于径向剪裁 */
+.el-button {
+    --el-button-bg-color: var(--primary);
+    --el-button-text-color: var(--primary-foreground);
+    --el-button-border-color: var(--primary);
+    --el-button-hover-bg-color: var(--secondary);
+    --el-button-hover-text-color: var(--secondary-foreground);
+    --el-button-hover-border-color: var(--secondary);
+    --el-button-border-radius: var(--radius);
+}
+
+.el-button--primary {
+    --el-button-bg-color: var(--primary);
+    --el-button-text-color: var(--primary-foreground);
+    --el-button-border-color: var(--primary);
+    --el-button-hover-bg-color: var(--secondary-foreground);
+    --el-button-hover-text-color: var(--secondary);
+    --el-button-hover-border-color: var(--secondary-foreground);
+}
+
+.el-button--default {
+    --el-button-bg-color: var(--background);
+    --el-button-text-color: var(--foreground);
+    --el-button-border-color: var(--border);
+    --el-button-hover-bg-color: var(--muted);
+    --el-button-hover-text-color: var(--foreground);
+    --el-button-hover-border-color: var(--border);
+}
+
+.el-dialog {
+    --el-dialog-bg-color: var(--card);
+    --el-dialog-border-radius: var(--radius);
+}
+
+.el-table {
+    --el-table-bg-color: transparent;
+    --el-table-tr-bg-color: transparent;
+    --el-table-header-bg-color: transparent;
+    --el-table-row-hover-bg-color: var(--muted);
+    --el-table-border-color: var(--border);
+    --el-table-text-color: var(--foreground);
+    --el-table-header-text-color: var(--muted-foreground);
+}
+
+.el-menu {
+    --el-menu-bg-color: transparent;
+    --el-menu-text-color: var(--foreground);
+    --el-menu-active-color: var(--foreground);
+    --el-menu-hover-bg-color: var(--accent);
+    --el-menu-hover-text-color: var(--accent-foreground);
+}
+
+.el-card {
+    --el-card-bg-color: var(--card);
+    --el-card-border-color: var(--border);
+    --el-card-border-radius: var(--radius);
+}
+
+.el-tag {
+    --el-tag-bg-color: var(--muted);
+    --el-tag-text-color: var(--muted-foreground);
+    --el-tag-border-color: var(--border);
+    --el-tag-border-radius: calc(var(--radius) * 0.5);
+}
+
+.el-switch {
+    --el-switch-on-color: var(--foreground);
+    --el-switch-off-color: var(--border);
+}
+
+/* ============================================
+   视图过渡动画（保持原有）
+   ============================================ */
+
 html.dark,
 html:not(.dark) {
     view-transition-name: root;
