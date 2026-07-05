@@ -22,7 +22,7 @@
         </el-option>
       </el-select>
       <div class="account-actions">
-        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent:clipboard-24" width="16" height="16" @click.stop="copyCurrentAccount"/>
+        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent:clipboard-24-regular" width="16" height="16" @click.stop="copyCurrentAccount"/>
         <Icon v-perm="'account:add'" class="action-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
       </div>
     </div>
@@ -265,8 +265,8 @@ function submitAddAccount() {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: calc(var(--radius) * 0.6);
       cursor: pointer;
       color: var(--muted-foreground);
