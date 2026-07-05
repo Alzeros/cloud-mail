@@ -22,7 +22,7 @@
         </el-option>
       </el-select>
       <div class="account-actions">
-        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent:clipboard-24-regular" width="16" height="16" @click.stop="copyCurrentAccount"/>
+        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="lucide:copy" width="15" height="15" @click.stop="copyCurrentAccount"/>
         <Icon v-perm="'account:add'" class="action-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
       </div>
     </div>

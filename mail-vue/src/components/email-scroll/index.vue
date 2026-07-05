@@ -1069,6 +1069,7 @@ function loadData() {
 
   .title {
     flex: 1;
+    min-width: 0;
     display: grid;
     grid-template-columns: 240px 1fr;
     @media (max-width: 1366px) {
@@ -1161,6 +1162,7 @@ function loadData() {
 
     .email-text {
       display: grid;
+      min-width: 0;
       grid-template-columns: auto 1fr;
       @media (max-width: 1366px) {
         grid-template-columns: 1fr;
@@ -1220,6 +1222,9 @@ function loadData() {
     display: flex;
     padding-left: 15px;
     align-items: center;
+    flex-shrink: 0;
+    min-width: 60px;
+    justify-content: flex-end;
     @media (max-width: 1366px) {
       display: none;
     }
