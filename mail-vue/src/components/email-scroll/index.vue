@@ -986,7 +986,7 @@ function loadData() {
   display: flex;
   padding: 14px 16px;
   justify-content: flex-start;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-subtle);
   cursor: pointer;
   align-items: center;
   position: relative;
