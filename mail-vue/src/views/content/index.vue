@@ -271,26 +271,31 @@ const handleDelete = () => {
     flex-direction: column;
 
     .att {
-      margin-top: 30px;
-      margin-bottom: 30px;
+      margin-top: 24px;
+      margin-bottom: 24px;
       border: 1px solid var(--border);
-      padding: 14px;
       border-radius: var(--radius);
+      padding: 14px 16px;
       width: fit-content;
+      min-width: min(410px,calc(100vw - 60px));
+      max-width: 600px;
       .att-box {
-        min-width: min(410px,calc(100vw - 60px));
-        max-width: 600px;
+        min-width: min(410px,calc(100vw - 90px));
+        max-width: 568px;
         display: grid;
-        gap: 12px;
+        gap: 10px;
         grid-template-rows: 1fr;
       }
 
       .att-title {
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         display: flex;
         justify-content: space-between;
+        color: var(--muted-foreground);
+        font-size: 13px;
         span:first-child {
           font-weight: 600;
+          color: var(--foreground);
         }
       }
 
@@ -300,7 +305,7 @@ const handleDelete = () => {
           align-self: center;
         }
         background: var(--muted);
-        padding: 5px 7px;
+        padding: 8px 10px;
         border-radius: calc(var(--radius) * 0.6);
         align-self: start;
         display: grid;
@@ -310,12 +315,13 @@ const handleDelete = () => {
         }
 
         .att-size {
-          color: var(--secondary-text-color);
+          color: var(--muted-foreground);
+          font-size: 12px;
         }
 
         .att-name {
-          margin-left: 8px;
-          margin-right: 8px;
+          margin-left: 10px;
+          margin-right: 10px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -330,13 +336,13 @@ const handleDelete = () => {
 
         .opt-icon {
           padding-left: 10px;
-          color: var(--secondary-text-color);
+          color: var(--muted-foreground);
           align-items: center;
           display: flex;
           gap: 8px;
           cursor: pointer;
           a {
-            color: var(--secondary-text-color);
+            color: var(--muted-foreground);
             align-items: center;
             display: flex;
           }
@@ -407,17 +413,6 @@ const handleDelete = () => {
       }
     }
   }
-}
-
-.shadow-html::after  {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--message-block-color);
-  pointer-events: none;
 }
 
 .email-text {

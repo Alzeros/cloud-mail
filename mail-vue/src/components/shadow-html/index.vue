@@ -34,13 +34,13 @@ function updateContent() {
     <style>
       :host {
         all: initial;
+        display: block;
         width: 100%;
-        height: 100%;
         font-family: -apple-system, Inter, BlinkMacSystemFont,
                     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         font-size: 14px;
-        line-height: 1.5;
-        color: #13181D;
+        line-height: 1.6;
+        color: #1f2328;
         word-break: break-word;
       }
 
@@ -55,14 +55,17 @@ function updateContent() {
 
       a {
         text-decoration: none;
-        color: #0E70DF;
+        color: #0969da;
       }
 
       .shadow-content {
-        background: #FFFFFF;
+        background: #f6f8fa;
+        border-radius: 8px;
+        padding: 20px 24px;
         width: fit-content;
         height: fit-content;
         min-width: 100%;
+        box-sizing: border-box;
         ${bodyStyle ? bodyStyle : ''} /* 注入 body 的 style */
       }
 
@@ -79,22 +82,11 @@ function updateContent() {
 }
 
 function autoScale() {
+  // 不再做 zoom 缩放：邮件正文按自然宽度流式排版，
+  // 图片通过 max-width: 100% 自适应，避免内容被压缩变形。
   if (!shadowRoot || !contentBox.value) return
-
-  const parent = contentBox.value
-  const shadowContent = shadowRoot.querySelector('.shadow-content')
-
-  if (!shadowContent) return
-
-  const parentWidth = parent.offsetWidth
-  const childWidth = shadowContent.scrollWidth
-
-  if (childWidth === 0) return
-
-  const scale = parentWidth / childWidth
-
   const hostElement = shadowRoot.host
-  hostElement.style.zoom = scale
+  if (hostElement) hostElement.style.zoom = ''
 }
 
 onMounted(() => {
