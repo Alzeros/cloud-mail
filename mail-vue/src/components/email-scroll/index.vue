@@ -38,7 +38,7 @@
                         :key="keyCount"
         >
           <template #default="{ data: item, index }" >
-            <div :class="'email-row ' + props.type"
+            <div :class="'email-row ' + props.type + (isSelected(item) ? ' active' : '')"
                  :data-checked="item.checked"
                  @click="jumpDetails(item)"
                  v-if="!item.expand"
@@ -83,15 +83,9 @@
                 </div>
 
                 <!-- \u7B2C\u4E8C\u884C: \u4E3B\u9898 + \u6458\u8981 -->
-                <div class="email-text" :style="(item.unread === EmailUnreadEnum.UNREAD && showUnread) ? 'font-weight: bold' : 'font-weight: 500;'">
+                <div class="email-text" :class="(item.unread === EmailUnreadEnum.UNREAD && showUnread) ? 'unread-bold' : 'normal-weight'">
                   <div class="unread" v-if="!isMobile && (item.unread === EmailUnreadEnum.UNREAD && showUnread) "/>
-                  <span v-if="item.code" class="code-tag" @click.stop="copyCode(item.code)">[{{ t('codeLabel') }}{{ item.code }}]</span>
-                  <span class="email-subject">
-                    <slot name="subject" :email="item" >
-                      {{ item.subject || '\u200B' }}
-                    </slot>
-                  </span>
-                  <span class="email-content">{{ item.formatText || '\u200B' }}</span>
+                  <span v-if="item.code" class="code-tag" @click.stop="copyCode(item.code)">[{{ t('codeLabel') }}{{ item.code }}]</span><span class="email-subject"><slot name="subject" :email="item" >{{ item.subject || '\u200B' }}</slot></span> <span class="email-content">{{ item.formatText || '\u200B' }}</span>
                 </div>
 
                 <div class="user-info" v-if="showUserInfo">
@@ -293,6 +287,10 @@ const props = defineProps({
   showUnread: {
     type: Boolean,
     default: false
+  },
+  selectedEmailId: {
+    type: [Number, String, null],
+    default: null
   }
 })
 
@@ -394,9 +392,9 @@ const list = computed(() => {
 
 const itemHeight = computed(() => {
     if (props.type === 'all-email') {
-      return isMobile.value ? 132 : 92;
+      return isMobile.value ? 136 : 96;
     } else  {
-      return isMobile.value ? 108 : 72;
+      return isMobile.value ? 112 : 76;
     }
 })
 
@@ -789,6 +787,10 @@ function updateCheckStatus() {
   isIndeterminate.value = checkedCount > 0 && checkedCount < emailList.length;
 }
 
+function isSelected(item) {
+  return props.selectedEmailId != null && item.emailId === props.selectedEmailId
+}
+
 function jumpDetails(email) {
 
   if (dropdownShow.value) {
@@ -982,25 +984,25 @@ function loadData() {
 
 :deep(.email-row) {
   display: flex;
-  padding: 10px 12px;
+  padding: 14px 16px;
   justify-content: flex-start;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
   align-items: center;
   position: relative;
   transition: background 0.15s ease;
-  height: 72px;
+  height: 76px;
   @media (max-width: 1366px) {
-    height: 108px;
+    height: 112px;
   }
 
   @media (pointer: coarse) {
     user-select: none;
   }
   &.all-email {
-    height: 92px;
+    height: 96px;
     @media (max-width: 1366px) {
-      height: 132px;
+      height: 136px;
     }
   }
   .user-info {
@@ -1127,53 +1129,63 @@ function loadData() {
       align-items: center;
     }
 
-    // 第二行: 主题 + 摘要,单行截断
+    // 第二行: 单行 inline 文本容器, 主题优先完整, 摘要自然省略
     .email-text {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: block;
+      width: 100%;
       min-width: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: var(--foreground);
+      line-height: 1.4;
 
+      &.normal-weight {
+        font-weight: 500;
+      }
+      &.unread-bold {
+        font-weight: 700;
+      }
+
+      // 主题: 行内, 不单独截断, 由容器整体截断
       .email-subject {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        min-width: 0;
-        flex-shrink: 1;
+        color: var(--foreground);
       }
 
       .code-tag {
-        flex: 0 0 auto;
-        max-width: 170px;
-        height: 20px;
-        line-height: 20px;
+        display: inline;
         font-size: 13px;
         color: var(--foreground);
-        overflow: hidden;
         white-space: nowrap;
-        text-overflow: ellipsis;
         cursor: pointer;
       }
 
+      // 摘要: 行内, 更浅灰
       .email-content {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        padding-left: 10px;
-        color: var(--email-scroll-content-color);
+        color: var(--muted-foreground);
         font-weight: 400;
-        flex-shrink: 1;
-        min-width: 0;
+        white-space: nowrap;
       }
     }
   }
 
   &:hover {
     background-color: var(--email-hover-background);
+  }
+
+  // 选中态: 浅色背景 + 左侧指示条
+  &.active {
+    background-color: var(--accent);
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--primary);
+      border-radius: 0 2px 2px 0;
+    }
   }
 
   &:last-child {

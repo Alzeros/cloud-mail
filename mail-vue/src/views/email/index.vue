@@ -12,6 +12,7 @@
                    :time-sort="params.timeSort"
                    :email-read="emailRead"
                    :show-unread="true"
+                   :selected-email-id="inlineEmail ? inlineEmail.emailId : null"
                    actionLeft="4px"
                    @jump="jumpContent"
       >
