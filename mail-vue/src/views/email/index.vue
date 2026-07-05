@@ -2,23 +2,6 @@
   <div class="email-layout" :class="{ 'content-only': isNarrow && inlineEmail }">
     <!-- 左侧: 邮件列表 -->
     <div class="email-list-panel" :class="{ 'panel-active': !isNarrow || !inlineEmail }">
-      <div class="account-header">
-        <el-select v-model="selectedAccountId" class="account-select" @change="handleAccountChange" size="small">
-          <el-option :value="-1" :label="$t('allAccounts')">
-            <div class="account-option">
-              <Icon icon="hugeicons:mailbox-01" width="16" height="16" />
-              <span>{{ $t('allAccounts') }}</span>
-            </div>
-          </el-option>
-          <el-option v-for="acc in accountList" :key="acc.accountId" :value="acc.accountId" :label="acc.email">
-            <div class="account-option">
-              <Icon icon="mdi-light:email" width="16" height="16" />
-              <span>{{ acc.email }}</span>
-            </div>
-          </el-option>
-        </el-select>
-        <Icon v-perm="'account:add'" class="add-account-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
-      </div>
       <emailScroll ref="scroll"
                    :cancel-success="cancelStar"
                    :star-success="addStar"
@@ -122,22 +105,7 @@
       @close="showPreview = false"
   />
 
-  <!-- 添加邮箱对话框 -->
-  <el-dialog v-model="showAddAccountDialog" :title="$t('addAccount')" width="400px">
-    <div class="add-account-form">
-      <el-input v-model="addAccountEmail" type="text" :placeholder="$t('emailAccount')" autocomplete="off">
-        <template #append>
-          <el-select v-model="addAccountSuffix" :placeholder="$t('select')" style="width: 100px">
-            <el-option v-for="item in addAccountDomainList" :key="item" :label="item" :value="item" />
-          </el-select>
-        </template>
-      </el-input>
-      <el-button class="btn" type="primary" @click="submitAddAccount" :loading="addAccountLoading" style="margin-top: 15px; width: 100%">
-        {{ $t('add') }}
-      </el-button>
-    </div>
-  </el-dialog>
-</template>
+  </template>
 
 <script setup>
 import {useAccountStore} from "@/store/account.js";
@@ -177,13 +145,6 @@ const inlineEmail = computed(() => emailStore.inlineContent)
 const showPreview = ref(false)
 const srcList = reactive([])
 const isNarrow = ref(window.innerWidth < 1024)
-const selectedAccountId = ref(-1)
-const accountList = reactive([])
-const showAddAccountDialog = ref(false)
-const addAccountEmail = ref('')
-const addAccountLoading = ref(false)
-const addAccountSuffix = ref('')
-const addAccountDomainList = computed(() => settingStore.domainList)
 
 window.addEventListener('resize', () => {
   isNarrow.value = window.innerWidth < 1024
@@ -191,9 +152,7 @@ window.addEventListener('resize', () => {
 
 onMounted(() => {
   emailStore.emailScroll = scroll;
-  fetchAccountList()
   latest()
-  selectedAccountId.value = accountStore.currentAccountId
   // 如果有 contentData 但没导航到 /message, 显示 inline
   if (emailStore.contentData.email && !emailStore.inlineContent) {
     emailStore.inlineContent = emailStore.contentData.email
@@ -201,63 +160,9 @@ onMounted(() => {
 })
 
 watch(() => accountStore.currentAccountId, () => {
-  selectedAccountId.value = accountStore.currentAccountId
   scroll.value.refreshList()
   emailStore.inlineContent = null
 })
-
-watch(() => showAddAccountDialog.value, (val) => {
-  if (val && !addAccountSuffix.value && addAccountDomainList.value.length > 0) {
-    addAccountSuffix.value = addAccountDomainList.value[0]
-  }
-})
-
-function handleAccountChange(val) {
-  if (val === -1) {
-    accountStore.currentAccountId = -1
-    accountStore.currentAccount = { allReceive: 1 }
-  } else {
-    const acc = accountList.find(a => a.accountId === val)
-    if (acc) {
-      accountStore.currentAccountId = acc.accountId
-      accountStore.currentAccount = acc
-    }
-  }
-  emailStore.inlineContent = null
-  scroll.value?.refreshList()
-}
-
-function fetchAccountList() {
-  import('@/request/account.js').then(({ accountList: api }) => {
-    api(0, 100, null).then(list => {
-      accountList.length = 0
-      accountList.push(...list)
-      // 如果当前选中的是 -1，但还没同步到 store，同步一下
-      if (accountStore.currentAccountId === -1 && list.length > 0) {
-        // 保持全部邮箱模式
-      }
-    })
-  }).catch(() => {})
-}
-
-function submitAddAccount() {
-  if (!addAccountEmail.value) {
-    ElMessage({ message: '请输入邮箱前缀', type: 'error', plain: true })
-    return
-  }
-  const fullEmail = addAccountEmail.value + addAccountSuffix.value
-  addAccountLoading.value = true
-  import('@/request/account.js').then(({ accountAdd }) => {
-    accountAdd(fullEmail, '').then(account => {
-      accountList.push(account)
-      showAddAccountDialog.value = false
-      addAccountEmail.value = ''
-      ElMessage({ message: '添加成功', type: 'success', plain: true })
-    }).catch(() => {}).finally(() => {
-      addAccountLoading.value = false
-    })
-  })
-}
 
 function changeTimeSort() {
   params.timeSort = params.timeSort ? 0 : 1
@@ -668,38 +573,5 @@ function openForward() {
 
 .icon {
   cursor: pointer;
-}
-
-.account-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--card);
-  .account-select {
-    flex: 1;
-    min-width: 0;
-  }
-  .add-account-btn {
-    flex-shrink: 0;
-    color: var(--muted-foreground);
-    cursor: pointer;
-    transition: color 0.15s ease;
-    &:hover {
-      color: var(--foreground);
-    }
-  }
-}
-
-.account-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 }
 </style>

@@ -4,6 +4,31 @@
       <Icon icon="mdi:email-outline" width="20" height="20" />
       <span>{{settingStore.settings.title}}</span>
     </div>
+
+    <!-- 邮箱选择器 -->
+    <div class="account-selector" v-if="hasPerm('account:query')">
+      <el-select v-model="selectedAccountId" class="account-select" @change="handleAccountChange" size="default" popper-class="aside-account-popper">
+        <el-option :value="-1" :label="$t('allAccounts')">
+          <div class="account-option">
+            <Icon icon="hugeicons:mailbox-01" width="16" height="16" />
+            <span>{{ $t('allAccounts') }}</span>
+          </div>
+        </el-option>
+        <el-option v-for="acc in accountList" :key="acc.accountId" :value="acc.accountId" :label="acc.email">
+          <div class="account-option">
+            <Icon icon="mdi-light:email" width="16" height="16" />
+            <span>{{ acc.email }}</span>
+          </div>
+        </el-option>
+      </el-select>
+      <div class="account-actions">
+        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent-color:clipboard-24" width="16" height="16" @click.stop="copyCurrentAccount"/>
+        <Icon v-perm="'account:add'" class="action-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
     <div class="nav-section">
       <div class="nav-item" @click="router.push({name: 'email'})" :class="route.meta.name === 'email' ? 'active' : ''">
         <Icon icon="hugeicons:mailbox-01" width="18" height="18" />
@@ -68,6 +93,22 @@
       </div>
     </div>
   </div>
+
+  <!-- 添加邮箱对话框 -->
+  <el-dialog v-model="showAddAccountDialog" :title="$t('addAccount')" width="400px">
+    <div class="add-account-form">
+      <el-input v-model="addAccountEmail" type="text" :placeholder="$t('emailAccount')" autocomplete="off">
+        <template #append>
+          <el-select v-model="addAccountSuffix" :placeholder="$t('select')" style="width: 100px">
+            <el-option v-for="item in domainList" :key="item" :label="item" :value="item" />
+          </el-select>
+        </template>
+      </el-input>
+      <el-button class="btn" type="primary" @click="submitAddAccount" :loading="addAccountLoading" style="margin-top: 15px; width: 100%">
+        {{ $t('add') }}
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup>
@@ -75,9 +116,105 @@ import router from "@/router/index.js";
 import { useRoute } from "vue-router";
 import {Icon} from "@iconify/vue";
 import {useSettingStore} from "@/store/setting.js";
+import {useAccountStore} from "@/store/account.js";
+import {useEmailStore} from "@/store/email.js";
+import {computed, onMounted, reactive, ref, watch} from "vue";
+import { hasPerm } from "@/perm/perm.js"
+import {ElMessage} from 'element-plus'
 
 const settingStore = useSettingStore();
+const accountStore = useAccountStore();
+const emailStore = useEmailStore();
 const route = useRoute();
+
+const selectedAccountId = ref(accountStore.currentAccountId)
+const accountList = reactive([])
+const showAddAccountDialog = ref(false)
+const addAccountEmail = ref('')
+const addAccountLoading = ref(false)
+const addAccountSuffix = ref('')
+const domainList = computed(() => settingStore.domainList)
+
+onMounted(() => {
+  fetchAccountList()
+  if (domainList.value.length > 0 && !addAccountSuffix.value) {
+    addAccountSuffix.value = domainList.value[0]
+  }
+})
+
+watch(() => accountStore.currentAccountId, (val) => {
+  selectedAccountId.value = val
+})
+
+watch(() => showAddAccountDialog.value, (val) => {
+  if (val && !addAccountSuffix.value && domainList.value.length > 0) {
+    addAccountSuffix.value = domainList.value[0]
+  }
+})
+
+function handleAccountChange(val) {
+  if (val === -1) {
+    accountStore.currentAccountId = -1
+    accountStore.currentAccount = { allReceive: 1 }
+  } else {
+    const acc = accountList.find(a => a.accountId === val)
+    if (acc) {
+      accountStore.currentAccountId = acc.accountId
+      accountStore.currentAccount = acc
+    }
+  }
+  emailStore.inlineContent = null
+  emailStore.emailScroll?.refreshList()
+  emailStore.sendScroll?.refreshList()
+}
+
+async function copyCurrentAccount() {
+  const acc = accountList.find(a => a.accountId === selectedAccountId.value)
+  if (!acc) return
+  try {
+    await navigator.clipboard.writeText(acc.email)
+    ElMessage({
+      message: '复制成功',
+      type: 'success',
+      plain: true,
+    })
+  } catch (err) {
+    console.error('复制失败:', err)
+    ElMessage({
+      message: '复制失败',
+      type: 'error',
+      plain: true,
+    })
+  }
+}
+
+function fetchAccountList() {
+  import('@/request/account.js').then(({ accountList: api }) => {
+    api(0, 100, null).then(list => {
+      accountList.length = 0
+      accountList.push(...list)
+    })
+  }).catch(() => {})
+}
+
+function submitAddAccount() {
+  if (!addAccountEmail.value) {
+    ElMessage({ message: '请输入邮箱前缀', type: 'error', plain: true })
+    return
+  }
+  const fullEmail = addAccountEmail.value + addAccountSuffix.value
+  addAccountLoading.value = true
+  import('@/request/account.js').then(({ accountAdd }) => {
+    accountAdd(fullEmail, '').then(account => {
+      accountList.push(account)
+      showAddAccountDialog.value = false
+      addAccountEmail.value = ''
+      ElMessage({ message: '添加成功', type: 'success', plain: true })
+    }).catch(() => {}).finally(() => {
+      addAccountLoading.value = false
+    })
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -96,11 +233,56 @@ const route = useRoute();
   align-items: center;
   gap: 8px;
   padding: 10px 12px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-size: 16px;
   font-weight: 600;
   color: var(--foreground);
   letter-spacing: -0.02em;
+}
+
+.account-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px 8px;
+  .account-select {
+    flex: 1;
+    min-width: 0;
+    :deep(.el-select__wrapper) {
+      font-size: 14px;
+      min-height: 34px;
+    }
+    :deep(.el-select__placeholder) {
+      font-size: 14px;
+    }
+  }
+  .account-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    .action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: calc(var(--radius) * 0.6);
+      cursor: pointer;
+      color: var(--muted-foreground);
+      transition: all 0.15s ease;
+      &:hover {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+    }
+  }
+}
+
+.separator {
+  height: 1px;
+  background: var(--border);
+  margin: 0 12px 4px;
 }
 
 .nav-section {
@@ -139,6 +321,14 @@ const route = useRoute();
     background: var(--secondary);
     color: var(--secondary-foreground);
     font-weight: 500;
+  }
+}
+</style>
+
+<style>
+.aside-account-popper {
+  .el-select-dropdown__item {
+    font-size: 14px;
   }
 }
 </style>
