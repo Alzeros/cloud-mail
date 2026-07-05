@@ -22,8 +22,12 @@
         </el-option>
       </el-select>
       <div class="account-actions">
-        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="lucide:copy" width="15" height="15" @click.stop="copyCurrentAccount"/>
-        <Icon v-perm="'account:add'" class="action-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
+        <div v-if="selectedAccountId > 0" class="icon-btn" @click.stop="copyCurrentAccount" :title="$t('copy')">
+          <Icon icon="lucide:copy" width="16" height="16" style="font-size: 16px;" />
+        </div>
+        <div v-perm="'account:add'" class="icon-btn" @click="showAddAccountDialog = true" :title="$t('add')">
+          <Icon icon="lucide:plus" width="16" height="16" style="font-size: 16px;" />
+        </div>
       </div>
     </div>
 
@@ -243,14 +247,15 @@ function submitAddAccount() {
 .account-selector {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 12px 8px;
+  gap: 6px;
+  padding: 4px 10px 10px;
   .account-select {
     flex: 1;
     min-width: 0;
     :deep(.el-select__wrapper) {
       font-size: 14px;
-      min-height: 34px;
+      min-height: 32px;
+      height: 32px;
     }
     :deep(.el-select__placeholder) {
       font-size: 14px;
@@ -259,21 +264,31 @@ function submitAddAccount() {
   .account-actions {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     flex-shrink: 0;
-    .action-btn {
+    .icon-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: calc(var(--radius) * 0.6);
+      width: 32px;
+      height: 32px;
+      border-radius: calc(var(--radius) * 0.7);
       cursor: pointer;
       color: var(--muted-foreground);
+      background: transparent;
       transition: all 0.15s ease;
+      box-sizing: border-box;
       &:hover {
         background: var(--accent);
         color: var(--accent-foreground);
+      }
+      &:active {
+        background: var(--accent);
+        color: var(--foreground);
+      }
+      // 图标线条更细, 与下拉框箭头视觉重量一致
+      svg {
+        stroke-width: 1.6;
       }
     }
   }
