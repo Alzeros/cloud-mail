@@ -1,5 +1,8 @@
 <template>
   <div class="layout">
+    <aside class="aside" ref="asideRef">
+      <Aside />
+    </aside>
     <div class="main-container">
       <header class="main-header">
         <Header />
@@ -11,6 +14,7 @@
 </template>
 
 <script setup>
+import Aside from '@/layout/aside/index.vue'
 import Header from '@/layout/header/index.vue'
 import Main from '@/layout/main/index.vue'
 import { ref, onMounted } from 'vue'
@@ -26,6 +30,14 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.aside {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
 .layout {
   height: 100%;
   position: fixed;

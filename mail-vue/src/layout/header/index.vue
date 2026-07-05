@@ -1,68 +1,7 @@
 <template>
   <div class="header" :class="!hasPerm('email:send') ? 'not-send' : ''">
     <div class="header-btn">
-      <el-dropdown ref="navDropdownRef" trigger="click" :teleported="false">
-        <div class="nav-trigger" @click.prevent>
-          <Icon icon="hugeicons:menu-01" width="20" height="20" />
-        </div>
-        <template #dropdown>
-          <div class="nav-dropdown-menu">
-            <div class="nav-section">
-              <div class="nav-item" @click="navTo('email')">
-                <Icon icon="hugeicons:mailbox-01" width="16" height="16" />
-                <span>{{$t('inbox')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('send')" v-perm="'email:send'">
-                <Icon icon="cil:send" width="16" height="16" />
-                <span>{{$t('sent')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('draft')" v-perm="'email:send'">
-                <Icon icon="ep:document" width="16" height="16" />
-                <span>{{$t('drafts')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('star')">
-                <Icon icon="solar:star-line-duotone" width="16" height="16" />
-                <span>{{$t('starred')}}</span>
-              </div>
-            </div>
-            <div class="nav-divider"></div>
-            <div class="nav-section" v-perm="['all-email:query','user:query','role:query','setting:query','analysis:query','reg-key:query']">
-              <div class="section-label">{{$t('manage')}}</div>
-              <div class="nav-item" @click="navTo('analysis')" v-perm="'analysis:query'">
-                <Icon icon="fluent:data-pie-20-regular" width="16" height="16" />
-                <span>{{$t('analytics')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('user')" v-perm="'user:query'">
-                <Icon icon="si:user-alt-2-line" width="16" height="16" />
-                <span>{{$t('allUsers')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('all-email')" v-perm="'all-email:query'">
-                <Icon icon="fluent:mail-list-28-regular" width="16" height="16" />
-                <span>{{$t('allMail')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('role')" v-perm="'role:query'">
-                <Icon icon="fluent:lock-closed-16-regular" width="16" height="16" />
-                <span>{{$t('permissions')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('reg-key')" v-perm="'reg-key:query'">
-                <Icon icon="fluent:fingerprint-20-filled" width="16" height="16" />
-                <span>{{$t('inviteCode')}}</span>
-              </div>
-              <div class="nav-item" @click="navTo('sys-setting')" v-perm="'setting:query'">
-                <Icon icon="eos-icons:system-ok-outlined" width="16" height="16" />
-                <span>{{$t('SystemSettings')}}</span>
-              </div>
-            </div>
-            <div class="nav-divider"></div>
-            <div class="nav-section">
-              <div class="nav-item" @click="navTo('setting')">
-                <Icon icon="fluent:settings-48-regular" width="16" height="16" />
-                <span>{{$t('settings')}}</span>
-              </div>
-            </div>
-          </div>
-        </template>
-      </el-dropdown>
+      <hanburger @click="uiStore.asideShow = !uiStore.asideShow"></hanburger>
       <span class="breadcrumb-item">{{ $t(route.meta.title) }}</span>
     </div>
     <div v-perm="'email:send'" class="writer-box" @click="openSend">
@@ -135,6 +74,7 @@
 
 <script setup>
 import router from "@/router";
+import hanburger from '@/components/hamburger/index.vue'
 import {logout} from "@/request/login.js";
 import {Icon} from "@iconify/vue";
 import {useUiStore} from "@/store/ui.js";
@@ -154,11 +94,9 @@ const uiStore = useUiStore();
 const logoutLoading = ref(false)
 const userInfoShow = ref(false)
 const userinfoRef = ref({})
-const navDropdownRef = ref({})
 
-function navTo(name) {
-  navDropdownRef.value?.handleClose?.()
-  router.push({name})
+function changeAside() {
+  uiStore.asideShow = !uiStore.asideShow
 }
 
 const accountCount = computed(() => {
@@ -459,7 +397,6 @@ function formatName(email) {
   align-items: center;
   height: 100%;
   min-width: 0;
-  gap: 10px;
 }
 
 .breadcrumb-item {
@@ -469,68 +406,6 @@ function formatName(email) {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.nav-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: calc(var(--radius) * 0.8);
-  cursor: pointer;
-  color: var(--muted-foreground);
-  transition: all 0.15s ease;
-  &:hover {
-    background: var(--accent);
-    color: var(--accent-foreground);
-  }
-}
-
-:deep(.el-popper.nav-dropdown-popper) {
-  display: none !important;
-}
-
-.nav-dropdown-menu {
-  width: 200px;
-  padding: 6px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  .nav-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    .section-label {
-      padding: 6px 10px 4px;
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted-foreground);
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 10px;
-      border-radius: calc(var(--radius) * 0.7);
-      font-size: 13px;
-      color: var(--muted-foreground);
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.12s ease;
-      &:hover {
-        background: var(--accent);
-        color: var(--accent-foreground);
-      }
-    }
-  }
-  .nav-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 4px 8px;
-  }
 }
 
 .toolbar {
