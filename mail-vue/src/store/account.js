@@ -2,8 +2,8 @@
 
 export const useAccountStore = defineStore('account', {
     state: () => ({
-        currentAccountId: 0,
-        currentAccount: {},
+        currentAccountId: -1,
+        currentAccount: { allReceive: 1 },
         changeUserAccountName: ''
     })
 })

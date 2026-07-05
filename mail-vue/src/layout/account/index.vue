@@ -4,6 +4,13 @@
       <Icon v-perm="'account:add'" class="icon add" icon="ion:add-outline" width="23" height="23" @click="add"/>
       <Icon class="icon refresh" icon="ion:reload" width="18" height="18" @click="refresh"/>
     </div>
+    <!-- 全部邮箱 -->
+    <div class="all-account-item" :class="accountStore.currentAccountId === -1 ? 'item-choose' : ''" @click="selectAllAccounts">
+      <div class="all-account-icon">
+        <Icon icon="hugeicons:mailbox-01" width="18" height="18" />
+      </div>
+      <div class="account-label">{{ $t('allAccounts') }}</div>
+    </div>
     <el-scrollbar class="scrollbar" ref="scrollbarRef">
       <div v-infinite-scroll="getAccountList" :infinite-scroll-distance="600" :infinite-scroll-immediate="false">
         <el-card class="item" :class="itemBg(item.accountId)" v-for="(item, index) in accounts" :key="item.accountId"
@@ -343,6 +350,13 @@ function changeAccount(account) {
   accountStore.currentAccount = account
 }
 
+function selectAllAccounts() {
+  accountStore.currentAccountId = -1
+  accountStore.currentAccount = { allReceive: 1 }
+  emailStore.emailScroll?.refreshList()
+  emailStore.sendScroll?.refreshList()
+}
+
 function add() {
   addForm.suffix = addForm.suffix || settingStore.domainList[0]
   showAdd.value = true
@@ -408,9 +422,6 @@ function getAccountList() {
 
     if (list.length < queryParams.size) {
       noLoading.value = true
-    }
-    if (accounts.length === 0) {
-      accountStore.currentAccount = list[0]
     }
 
     accounts.push(...list)
@@ -550,10 +561,10 @@ path[fill="#ffdda1"] {
 
   .scrollbar {
     width: 100%;
-    height: calc(100% - 38px);
+    height: calc(100% - 99px);
     overflow: auto;
     @media (max-width: 767px) {
-      height: calc(100% - 98px);
+      height: calc(100% - 159px);
     }
 
     .empty {
@@ -623,6 +634,36 @@ path[fill="#ffdda1"] {
 
   .item-choose {
     background: var(--choose-account-background);
+  }
+
+  .all-account-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    margin: 8px 10px 4px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    color: var(--foreground);
+    font-weight: 600;
+    font-size: 14px;
+    &:hover {
+      background: var(--accent);
+    }
+    &.item-choose {
+      background: var(--choose-account-background);
+    }
+    .all-account-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+    .account-label {
+      flex: 1;
+    }
   }
 }
 

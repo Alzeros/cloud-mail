@@ -15,6 +15,7 @@ export const useEmailStore = defineStore('email', {
             showUnread: false
         },
         sendScroll: null,
+        inlineContent: null, // 三栏模式: 右侧面板当前显示的邮件
     }),
     persist: {
         pick: ['contentData'],
