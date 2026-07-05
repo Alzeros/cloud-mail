@@ -6,7 +6,7 @@
     </div>
 
     <!-- 邮箱选择器 -->
-    <div class="account-selector" v-if="hasPerm('account:query')">
+    <div class="account-selector" v-if="hasPerm('account:query') && settingStore.settings.manyEmail === 0">
       <el-select v-model="selectedAccountId" class="account-select" @change="handleAccountChange" size="default" popper-class="aside-account-popper">
         <el-option :value="-1" :label="$t('allAccounts')">
           <div class="account-option">
@@ -22,7 +22,7 @@
         </el-option>
       </el-select>
       <div class="account-actions">
-        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent-color:clipboard-24" width="16" height="16" @click.stop="copyCurrentAccount"/>
+        <Icon v-if="selectedAccountId > 0" class="action-btn" icon="fluent:clipboard-24" width="16" height="16" @click.stop="copyCurrentAccount"/>
         <Icon v-perm="'account:add'" class="action-btn" icon="ion:add-outline" width="18" height="18" @click="showAddAccountDialog = true"/>
       </div>
     </div>
