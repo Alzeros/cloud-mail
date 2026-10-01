@@ -26,3 +26,5 @@ mail-vue/dist
 mail-vue/pnpm-workspace.yaml
 .wrangler
 .venv
+git-tools.js
+.workbuddy
