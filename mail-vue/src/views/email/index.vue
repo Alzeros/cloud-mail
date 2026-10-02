@@ -127,6 +127,7 @@ import {formatBytes} from "@/utils/file-utils.js";
 import {cvtR2Url, toOssDomain} from "@/utils/convert.js";
 import {getIconByName} from "@/utils/icon-utils.js";
 import {ElMessage, ElMessageBox} from 'element-plus'
+import {EmailUnreadEnum} from "@/enums/email-enum.js";
 
 defineOptions({
   name: 'email'
@@ -176,6 +177,14 @@ function jumpContent(email) {
   emailStore.contentData.showUnread = true
   emailStore.contentData.showStar = true
   emailStore.contentData.showReply = true
+
+  if (email?.emailId && email.unread === EmailUnreadEnum.UNREAD) {
+    email.unread = EmailUnreadEnum.READ
+    emailRead([email.emailId]).catch(() => {
+      email.unread = EmailUnreadEnum.UNREAD
+    })
+  }
+
   // 窄屏时跳转到 content 路由
   if (isNarrow.value) {
     emailStore.contentData.email = email
